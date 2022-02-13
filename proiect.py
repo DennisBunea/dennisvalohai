@@ -7,6 +7,8 @@ data_train = pd.read_csv('train.csv')
 data_test = pd.read_csv('test.csv')
 import valohai 
 valohai.prepare(step="train")
+valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu")
+
 
 sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
 plt.show()
