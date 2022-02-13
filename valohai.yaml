@@ -5,6 +5,12 @@
     - pip install -r requirements.txt
     - python ./proiect.py {parameters}
     inputs:
-    - name: myinput
-      default: s3://bucket/mydata.csv
+    - name: train
+      default: s3://bucket/train.csv
+      optional: false
+    - name: test
+      default: s3://bucket/test.csv
+      optional: false
+    - name: gender_submission
+      default: s3://bucket/gender_submission.csv
       optional: false

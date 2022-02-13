@@ -8,13 +8,29 @@ data_test = pd.read_csv('test.csv')
 import valohai 
 
 default_inputs = {
-    'myinput': 's3://bucket/mydata.csv'
+    'train': 's3://bucket/train.csv'
+}
+
+default_inputs = {
+    'test': 's3://bucket/test.csv'
+}
+
+default_inputs = {
+    'gender_submission': 's3://bucket/gender_submission.csv'
 }
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs)
 
-with open(valohai.inputs("myinput").path()) as csv_file:
+with open(valohai.inputs("train").path()) as csv_file:
     reader = csv_file.reader(csv_file, delimiter=',')
+
+with open(valohai.inputs("test").path()) as csv_file:
+    reader = csv_file.reader(csv_file, delimiter=',')
+
+with open(valohai.inputs("gender_submission").path()) as csv_file:
+    reader = csv_file.reader(csv_file, delimiter=',')
+
+
 
 
 
@@ -122,6 +138,6 @@ RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
 predictions = clf.predict(X_test)
 print(accuracy_score(y_test, predictions))
 
-out_path = valohai.outputs().path('mydata.csv')
+out_path = valohai.outputs().path('test.csv , train.csv , gender_submission.csv')
 def csv_file(df):
-    df.to_csv=(out_path)
+    df.csv_file=(out_path)
