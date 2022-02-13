@@ -6,7 +6,16 @@ import seaborn as sns
 data_train = pd.read_csv('train.csv')
 data_test = pd.read_csv('test.csv')
 import valohai 
-valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu")
+
+default_inputs = {
+    'myinput': 's3://bucket/mydata.csv'
+}
+
+valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs)
+
+with open(valohai.inputs("myinput").path()) as csv_file:
+    reader = csv_file.reader(csv_file, delimiter=',')
+
 
 
 sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
@@ -113,3 +122,6 @@ RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
 predictions = clf.predict(X_test)
 print(accuracy_score(y_test, predictions))
 
+out_path = valohai.outputs().path('mydata.csv')
+def csv_file(df):
+    df.to_csv=(out_path)
