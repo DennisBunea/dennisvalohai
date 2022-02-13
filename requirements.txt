@@ -2,6 +2,6 @@ numpy
 pandas
 seaborn
 sklearn
-valohai-utils==0.1.12
+valohai-utils
 
 
