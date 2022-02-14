@@ -17,10 +17,6 @@ valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_i
 
 with open(valohai.inputs("train").path()) as csv_file:
     reader = csv_file.reader(csv_file, delimiter=',')
-with open(valohai.inputs("gender_submission").path()) as csv_file:
-    reader = csv_file.reader(csv_file, delimiter=',')
-with open(valohai.inputs("test").path()) as csv_file:
-    reader = csv_file.reader(csv_file, delimiter=',')
 
 
 sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
