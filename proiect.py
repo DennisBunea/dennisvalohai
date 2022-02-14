@@ -15,17 +15,8 @@ default_inputs = {
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs)
 
-with open(valohai.inputs("train").path()) as csv_file:
+with open(valohai.inputs("train , test , gender_submission").path()) as csv_file:
     reader = csv_file.reader(csv_file, delimiter=',')
-
-with open(valohai.inputs("test").path()) as csv_file:
-    reader = csv_file.reader(csv_file, delimiter=',')
-
-with open(valohai.inputs("gender_submission").path()) as csv_file:
-    reader = csv_file.reader(csv_file, delimiter=',')
-
-
-
 
 
 sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
@@ -132,6 +123,8 @@ RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
 predictions = clf.predict(X_test)
 print(accuracy_score(y_test, predictions))
 
-out_path = valohai.outputs().path('test.csv , train.csv , gender_submission.csv')
-def csv_file(df):
-    df.csv_file=(out_path)
+
+out_path = valohai.outputs().path('train.csv , test.csv , gender_submission.csv')
+def to_csv(df):
+    df.to_csv(out_path)
+
