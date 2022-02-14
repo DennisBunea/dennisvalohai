@@ -1,3 +1,4 @@
+from csv import reader
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -16,7 +17,7 @@ default_inputs = {
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs)
 with open(valohai.inputs("train").path()) as csv_file:
-    pd.read_csv()
+    reader = csv_file.reader(csv_file)
     
 
 
