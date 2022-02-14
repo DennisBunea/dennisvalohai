@@ -6,11 +6,11 @@
     - python ./proiect.py {parameters}
     inputs:
     - name: train
-      default: s3://bucket/train.csv
+      default: datum://017ef88d-2343-ef70-a47c-1ed37b59b244
       optional: false
     - name: test
-      default: s3://bucket/test.csv
+      default: datum://017ef88d-21b8-2413-6212-714e6dd770a8
       optional: false
     - name: gender_submission
-      default: s3://bucket/gender_submission.csv
+      default: datum://017ef88d-2036-4ea5-7755-9d1d303548cf
       optional: false
