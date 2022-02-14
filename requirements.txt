@@ -3,5 +3,5 @@ pandas
 seaborn
 sklearn
 valohai-utils
-
+tensorflow
 

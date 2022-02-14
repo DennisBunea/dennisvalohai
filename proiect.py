@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 data_train = pd.read_csv('train.csv')
 data_test = pd.read_csv('test.csv')
-import valohai 
+import valohai
+import tensorflow as tf
 
 default_inputs = {
     'train': 'datum://017ef88d-2343-ef70-a47c-1ed37b59b244',
