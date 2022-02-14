@@ -8,15 +8,9 @@ data_test = pd.read_csv('test.csv')
 import valohai 
 
 default_inputs = {
-    'train': 's3://bucket/train.csv'
-}
-
-default_inputs = {
-    'test': 's3://bucket/test.csv'
-}
-
-default_inputs = {
-    'gender_submission': 's3://bucket/gender_submission.csv'
+    'train': 'datum://017ef88d-2343-ef70-a47c-1ed37b59b244',
+    'gender_submission': 'datum://017ef88d-2036-4ea5-7755-9d1d303548cf',
+    'test': 'datum://017ef88d-21b8-2413-6212-714e6dd770a8'
 }
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs)
