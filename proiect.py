@@ -14,9 +14,8 @@ default_inputs = {
 }
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs)
-
-with open(valohai.inputs("train").path()) as csvfile:
-    reader = csvfile.reader(csvfile, delimiter=',')
+with open(valohai.inputs("train").path()) as csv_file:
+    reader = csv_file.reader(csv_file, delimiter=',')
 
 
 sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
