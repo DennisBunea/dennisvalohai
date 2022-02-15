@@ -20,6 +20,18 @@ default_parameters = {
     'iterations': 10,
 }
 
+def log_metadata(epoch, logs):
+ 
+    with valohai.logger() as logger:
+ 
+        logger.log('epoch', epoch)
+ 
+        logger.log('accuracy', logs['accuracy'])
+ 
+        logger.log('loss', logs['loss'])
+
+callback = tf.keras.callbacks.LambdaCallback(on_epoch_end=log_metadata)
+
 # Create a step 'train' in valohai.yaml with a set of inputs
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
  
