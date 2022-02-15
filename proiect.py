@@ -20,7 +20,7 @@ default_inputs = {
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs)
  
 # Open the CSV file from Valohai inputs
-with open(valohai.inputs("train").path()) as csv_file:
+with open(valohai.inputs('train').path()) as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
     
 
@@ -130,7 +130,7 @@ predictions = clf.predict(X_test)
 print(accuracy_score(y_test, predictions))
 
 
-out_path = valohai.outputs().path('train.csv' , 'test.csv' , 'gender_submission.csv')
+out_path = valohai.outputs().path('train.csv')
 def to_csv(df):
     df.to_csv(out_path)
 
