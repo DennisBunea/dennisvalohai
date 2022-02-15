@@ -20,7 +20,7 @@ default_inputs = {
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs)
  
 # Open the CSV file from Valohai inputs
-with open(valohai.inputs("myinput").path()) as csv_file:
+with open(valohai.inputs("train", "gender_submission", "test").path()) as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
     
 
