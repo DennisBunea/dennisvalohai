@@ -1,3 +1,4 @@
+import csv
 from csv import reader
 import numpy as np
 import pandas as pd
@@ -15,9 +16,12 @@ default_inputs = {
     'test': 'datum://017ef88d-21b8-2413-6212-714e6dd770a8'
 }
 
+# Create a step 'train' in valohai.yaml with a set of inputs
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs)
-with open(valohai.inputs("train").path()) as csv_file:
-    reader = csv_file.reader(csv_file)
+ 
+# Open the CSV file from Valohai inputs
+with open(valohai.inputs("myinput").path()) as csv_file:
+    reader = csv.reader(csv_file, delimiter=',')
     
 
 
@@ -129,4 +133,5 @@ print(accuracy_score(y_test, predictions))
 out_path = valohai.outputs().path('train.csv' , 'test.csv' , 'gender_submission.csv')
 def to_csv(df):
     df.to_csv(out_path)
+
 
