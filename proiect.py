@@ -16,13 +16,21 @@ default_inputs = {
     'test': 'datum://017ef88d-21b8-2413-6212-714e6dd770a8'
 }
 
+default_parameters = {
+    'iterations': 10,
+}
+
 # Create a step 'train' in valohai.yaml with a set of inputs
-valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs)
+valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
  
 # Open the CSV file from Valohai inputs
 with open(valohai.inputs('train').path()) as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
     
+for i in range(valohai.parameters('iterations').value):
+    print("Iteration %s" % i)
+
+
 
 
 sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
