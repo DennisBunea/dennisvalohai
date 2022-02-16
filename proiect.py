@@ -19,7 +19,7 @@ default_inputs = {
 }
 
 default_parameters = {
-    'iterations': 10,
+    'epoch': 5,
 }
 
 input_path = 'mnist.npz'
