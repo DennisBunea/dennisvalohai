@@ -19,10 +19,10 @@ default_inputs = {
 }
 
 default_parameters = {
-    'epoch': 5,
+    'iterations': 10,
 }
 
-input_path = 'mnist.npz'
+input_path = 'train'
 with np.load(input_path, allow_pickle=True) as f:
     x_train, y_train = f['x_train'], f['y_train']
     x_test, y_test = f['x_test'], f['y_test']

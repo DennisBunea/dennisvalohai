@@ -5,6 +5,11 @@
     - pip install -r requirements.txt
     - python ./proiect.py {parameters}
     parameters:
+    - name: iterations
+      default: 10
+      multiple-separator: ','
+      optional: false
+      type: integer
     - name: epoch
         type: integer
         default: 5
