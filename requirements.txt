@@ -4,4 +4,8 @@ seaborn
 sklearn
 valohai-utils
 tensorflow
-
+PyYAML
+valohai-utils
+valohai-yaml
+pyrsistent
+metadata
