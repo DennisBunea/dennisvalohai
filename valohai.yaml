@@ -5,11 +5,12 @@
     - pip install -r requirements.txt
     - python ./proiect.py {parameters}
     parameters:
-    - name: iterations
-      default: 10
-      multiple-separator: ','
-      optional: false
-      type: integer
+    - name: epoch
+        type: integer
+        default: 5
+    - name: learning_rate
+        type: float
+        default: 0.001
     inputs:
     - name: train
       default: datum://017ef88d-2343-ef70-a47c-1ed37b59b244
