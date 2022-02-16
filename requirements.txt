@@ -8,4 +8,4 @@ PyYAML
 valohai-utils
 valohai-yaml
 pyrsistent
-metadata
+
