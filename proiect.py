@@ -32,7 +32,7 @@ def log_metadata(epoch, logs):
         logger.log('accuracy', logs['accuracy'])
         logger.log('loss', logs['loss'])
 
-input_path = valohai.inputs('train').path()
+input_path = valohai.inputs('train.csv').path()
 
 with np.load(input_path, allow_pickle=True) as f:
     x_train, y_train = f['x_train'], f['y_train']
