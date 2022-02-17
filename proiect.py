@@ -33,51 +33,52 @@ def log_metadata(epoch, logs):
         logger.log('epoch', epoch)
         logger.log('accuracy', logs['accuracy'])
         logger.log('loss', logs['loss'])
+try:
+ input_path = valohai.inputs('train').path()
 
-input_path = valohai.inputs('train').path()
-with np.load(input_path, allow_pickle=True) as f:
+ with np.load(input_path, allow_pickle=True) as f:
     x_train, y_train = f['x_train'], f['y_train']
     x_test, y_test = f['x_test'], f['y_test']
  
-x_train, x_test = x_train / 255.0, x_test / 255.0
+ x_train, x_test = x_train / 255.0, x_test / 255.0
  
-model = tf.keras.models.Sequential([
+ model = tf.keras.models.Sequential([
     tf.keras.layers.Flatten(input_shape=(28, 28)),
     tf.keras.layers.Dense(128, activation='relu'),
     tf.keras.layers.Dropout(0.2),
     tf.keras.layers.Dense(10)
 ])
  
-optimizer = tf.keras.optimizers.Adam(learning_rate=valohai.parameters('learning_rate').value)
-loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
-model.compile(optimizer=optimizer,
+ optimizer = tf.keras.optimizers.Adam(learning_rate=valohai.parameters('learning_rate').value)
+ loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+ model.compile(optimizer=optimizer,
             loss=loss_fn,
             metrics=['accuracy'])
  
-callback = tf.keras.callbacks.LambdaCallback(on_epoch_end=log_metadata)
-model.fit(x_train, y_train, epochs=valohai.parameters('epoch').value, callbacks=[callback])
+ callback = tf.keras.callbacks.LambdaCallback(on_epoch_end=log_metadata)
+ model.fit(x_train, y_train, epochs=valohai.parameters('epoch').value, callbacks=[callback])
  
-model.evaluate(x_test,  y_test, verbose=2)
+ model.evaluate(x_test,  y_test, verbose=2)
  
-output_path = valohai.outputs().path('model.h5')
-model.save(output_path)
+ output_path = valohai.outputs().path('model.h5')
+ model.save(output_path)
 
 
 # Create a step 'train' in valohai.yaml with a set of inputs
-valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
+ valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
  
 # Open the CSV file from Valohai inputs
-with open(valohai.inputs('train').path()) as csv_file:
+ with open(valohai.inputs('train').path()) as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
     
-for i in range(valohai.parameters('iterations').value):
+ for i in range(valohai.parameters('iterations').value):
     print("Iteration %s" % i)
 
-sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
-plt.show()
+ sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
+ plt.show()
 
 
-def simplify_ages(df):
+ def simplify_ages(df):
     df.Age = df.Age.fillna(-0.5)
     bins = (-1, 0, 5, 12, 18, 25, 35, 60, 120)
     group_names = ['Unknown', 'Baby', 'Child', 'Teenager', 'Student', 'Young Adult', 'Adult', 'Senior']
@@ -85,12 +86,12 @@ def simplify_ages(df):
     df.Age = categories
     return df
 
-def simplify_cabins(df):
+ def simplify_cabins(df):
     df.Cabin = df.Cabin.fillna('N')
     df.Cabin = df.Cabin.apply(lambda x: x[0])
     return df
 
-def simplify_fares(df):
+ def simplify_fares(df):
     df.Fare = df.Fare.fillna(-0.5)
     bins = (-1, 0, 8, 15, 31, 1000)
     group_names = ['Unknown', '1_quartile', '2_quartile', '3_quartile', '4_quartile']
@@ -98,15 +99,15 @@ def simplify_fares(df):
     df.Fare = categories
     return df
 
-def format_name(df):
+ def format_name(df):
     df['Lname'] = df.Name.apply(lambda x: x.split(' ')[0])
     df['NamePrefix'] = df.Name.apply(lambda x: x.split(' ')[1])
     return df    
     
-def drop_features(df):
+ def drop_features(df):
     return df.drop(['Ticket', 'Name', 'Embarked'], axis=1)
 
-def transform_features(df):
+ def transform_features(df):
     df = simplify_ages(df)
     df = simplify_cabins(df)
     df = simplify_fares(df)
@@ -114,8 +115,10 @@ def transform_features(df):
     df = drop_features(df)
     return df
 
-data_train = transform_features(data_train)
-data_test = transform_features(data_test)
+ data_train = transform_features(data_train)
+ data_test = transform_features(data_test)
+except:
+  print("Exception thrown. csv test fail")
 
 from sklearn import preprocessing, utils
 def encode_features(df_train, df_test):
