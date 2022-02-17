@@ -10,14 +10,6 @@ import seaborn as sns
 data_train = pd.read_csv("train.csv")
 data_test = pd.read_csv("test.csv")
 
-input_path = valohai.inputs("train.csv").path()
-with np.load(input_path, allow_pickle=True) as f:
-    x_train, y_train = f['x_train'], f['y_train']
-    x_test, y_test = f['x_test'], f['y_test']
- 
-x_train, x_test = x_train / 255.0, x_test / 255.0
-
-
 default_inputs = {
     'train': 'datum://017ef88d-2343-ef70-a47c-1ed37b59b244',
     'gender_submission': 'datum://017ef88d-2036-4ea5-7755-9d1d303548cf',
@@ -52,7 +44,13 @@ loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 model.compile(optimizer=optimizer,
             loss=loss_fn,
             metrics=['accuracy'])
+
+input_path = valohai.inputs("train.csv").path()
+with np.load(input_path, allow_pickle=True) as f:
+    x_train, y_train = f['x_train'], f['y_train']
+    x_test, y_test = f['x_test'], f['y_test']
  
+x_train, x_test = x_train / 255.0, x_test / 255.0 
 callback = tf.keras.callbacks.LambdaCallback(on_epoch_end=log_metadata)
 model.fit(x_train, y_train, epochs=valohai.parameters('epoch').value, callbacks=[callback])
  
@@ -72,7 +70,6 @@ for i in range(valohai.parameters('iterations').value):
 
 sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
 plt.show()
-
 
 def simplify_ages(df):
     df.Age = df.Age.fillna(-0.5)
