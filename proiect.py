@@ -34,7 +34,7 @@ def log_metadata(epoch, logs):
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
 
-input_path = valohai.inputs("train").path()
+input_path = valohai.inputs("train.csv").path()
 with np.load(input_path, allow_pickle=True) as f:
     x_train, y_train = f['x_train'], f['y_train']
     x_test, y_test = f['x_test'], f['y_test']
@@ -59,13 +59,13 @@ model.fit(x_train, y_train, epochs=valohai.parameters('epoch').value, callbacks=
  
 model.evaluate(x_test,  y_test, verbose=2)
  
-output_path = valohai.outputs().path('train')
+output_path = valohai.outputs().path('train.csv')
 model.save(output_path)
 
 
 
 # Open the CSV file from Valohai inputs
-with open(valohai.inputs('train').path()) as csv_file:
+with open(valohai.inputs('train.csv').path()) as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
     
 for i in range(valohai.parameters('iterations').value):
