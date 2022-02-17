@@ -20,8 +20,16 @@ default_inputs = {
 
 default_parameters = {
     'iterations': 10,
+    'epoch': 10,
+
 }
 
+def log_metadata(epoch, logs):
+    with valohai.logger() as logger:
+        logger.log('epoch', epoch)
+        logger.log('accuracy', logs['accuracy'])
+        logger.log('loss', logs['loss'])
+        
 # Create a step 'train' in valohai.yaml with a set of inputs
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
  
@@ -34,6 +42,7 @@ for i in range(valohai.parameters('iterations').value):
 
 sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
 plt.show()
+
 
 def simplify_ages(df):
     df.Age = df.Age.fillna(-0.5)
@@ -96,6 +105,7 @@ y_all = data_train['Survived']
 
 num_test = 0.20
 X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, test_size=num_test, random_state=23)
+
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import make_scorer, accuracy_score

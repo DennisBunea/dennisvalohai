@@ -10,6 +10,11 @@
       multiple-separator: ','
       optional: false
       type: integer
+    - name: epoch
+      default: 10
+      multiple-separator: ','
+      optional: false
+      type: integer
     inputs:
     - name: train
       default: datum://017ef88d-2343-ef70-a47c-1ed37b59b244
