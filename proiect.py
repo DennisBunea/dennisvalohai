@@ -7,8 +7,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 #%matplotlib inline
 import seaborn as sns
-data_train = pd.read_csv('train.csv')
-data_test = pd.read_csv('test.csv')
+data_train = pd.read_csv("train")
+data_test = pd.read_csv("train")
 
 
 
@@ -34,7 +34,7 @@ def log_metadata(epoch, logs):
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
 
-input_path = valohai.inputs('train.csv').path()
+input_path = valohai.inputs("train").path()
 with np.load(input_path, allow_pickle=True) as f:
     x_train, y_train = f['x_train'], f['y_train']
     x_test, y_test = f['x_test'], f['y_test']
@@ -59,7 +59,7 @@ model.fit(x_train, y_train, epochs=valohai.parameters('epoch').value, callbacks=
  
 model.evaluate(x_test,  y_test, verbose=2)
  
-output_path = valohai.outputs().path('model.h5')
+output_path = valohai.outputs().path('train')
 model.save(output_path)
 
 
