@@ -1,5 +1,5 @@
 - step:
-    name: train
+    name: train.csv
     image: tensorflow/tensorflow:2.6.1-gpu
     command:
     - pip install -r requirements.txt
