@@ -34,7 +34,7 @@ def log_metadata(epoch, logs):
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
 
-input_path = valohai.inputs('train.csv').path()
+input_path = valohai.inputs('train', 'test').path()
 with np.load(input_path, allow_pickle=True) as f:
     x_train, y_train = f['x_train'], f['y_train']
     x_test, y_test = f['x_test'], f['y_test']
