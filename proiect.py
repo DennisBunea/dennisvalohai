@@ -32,11 +32,12 @@ def log_metadata(epoch, logs):
         logger.log('accuracy', logs['accuracy'])
         logger.log('loss', logs['loss'])
 
-input_path = valohai.inputs('train.csv').path()
+valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
 
+input_path = valohai.inputs('train.csv').path()
 with np.load(input_path, allow_pickle=True) as f:
-    x_train, y_train = f['x_train.csv'], f['y_train.csv']
-    x_test, y_test = f['x_test.csv'], f['y_test.csv']
+    x_train, y_train = f['x_train'], f['y_train']
+    x_test, y_test = f['x_test'], f['y_test']
  
 x_train, x_test = x_train / 255.0, x_test / 255.0
  
@@ -62,9 +63,7 @@ output_path = valohai.outputs().path('model.h5')
 model.save(output_path)
 
 
-# Create a step 'train' in valohai.yaml with a set of inputs
-valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
- 
+
 # Open the CSV file from Valohai inputs
 with open(valohai.inputs('train').path()) as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
