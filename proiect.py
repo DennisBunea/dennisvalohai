@@ -46,7 +46,7 @@ model.compile(optimizer=optimizer,
             metrics=['accuracy'])
 
 input_path = valohai.inputs("train.csv").path()
-with np.load(input_path, allow_pickle=True) as f:
+with np.load(input_path) as f:
     x_train, y_train = f['x_train'], f['y_train']
     x_test, y_test = f['x_test'], f['y_test']
  
