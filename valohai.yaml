@@ -21,6 +21,6 @@
       optional: false
       type: float
     inputs:
-    - name: train
+    - name: myinput
       default: datum://017ef88d-2343-ef70-a47c-1ed37b59b244
       optional: false
