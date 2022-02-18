@@ -116,27 +116,6 @@ RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
 predictions = clf.predict(X_test)
 print(accuracy_score(y_test, predictions))
 
-from sklearn.model_selection import KFold
-
-def run_kfold(clf):
-    kf = KFold(891, n_folds=10)
-    outcomes = []
-    fold = 0
-    for train_index, test_index in kf:
-        fold += 1
-        X_train, X_test = X_all.values[train_index], X_all.values[test_index]
-        y_train, y_test = y_all.values[train_index], y_all.values[test_index]
-        clf.fit(X_train, y_train)
-        predictions = clf.predict(X_test)
-        accuracy = accuracy_score(y_test, predictions)
-        outcomes.append(accuracy)
-        print("Fold {0} accuracy: {1}".format(fold, accuracy))     
-    mean_outcome = np.mean(outcomes)
-    print("Mean Accuracy: {0}".format(mean_outcome)) 
-
-run_kfold(clf)
-
-
 out_path = valohai.outputs().path('myinput')
 
 
