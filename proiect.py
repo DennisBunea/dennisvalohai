@@ -15,8 +15,7 @@ data_test = pd.read_csv('test.csv')
 
 default_inputs = {
     'train': 'datum://017ef88d-2343-ef70-a47c-1ed37b59b244',
-    'gender_submission': 'datum://017ef88d-2036-4ea5-7755-9d1d303548cf',
-    'test': 'datum://017ef88d-21b8-2413-6212-714e6dd770a8'
+   
 }
 
 default_parameters = {
@@ -34,7 +33,7 @@ def log_metadata(epoch, logs):
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
 
-input_path = valohai.inputs('train', 'test').path()
+input_path = valohai.inputs("train").path()
 with np.load(input_path, allow_pickle=True) as f:
     x_train, y_train = f['x_train'], f['y_train']
     x_test, y_test = f['x_test'], f['y_test']

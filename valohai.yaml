@@ -1,5 +1,5 @@
 - step:
-    name: train.csv
+    name: train
     image: tensorflow/tensorflow:2.6.1-gpu
     command:
     - pip install -r requirements.txt
@@ -23,10 +23,4 @@
     inputs:
     - name: train
       default: datum://017ef88d-2343-ef70-a47c-1ed37b59b244
-      optional: false
-    - name: gender_submission
-      default: datum://017ef88d-2036-4ea5-7755-9d1d303548cf
-      optional: false
-    - name: test
-      default: datum://017ef88d-21b8-2413-6212-714e6dd770a8
       optional: false
