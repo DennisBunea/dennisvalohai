@@ -24,16 +24,24 @@ default_parameters = {
     'learning_rate': 0.001,
 
 }
-
 def log_metadata(epoch, logs):
-     with valohai.logger() as logger:
+ 
+    with valohai.logger() as logger:
+ 
         logger.log('epoch', epoch)
+ 
         logger.log('accuracy', logs['accuracy'])
+ 
         logger.log('loss', logs['loss'])
-
-valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
-
-input_path = valohai.inputs("myinput").path()
+ 
+ 
+ 
+input_path = valohai.inputs('dataset').path()
+with np.load(input_path, allow_pickle=True) as f:
+    x_train, y_train = f['x_train'], f['y_train']
+    x_test, y_test = f['x_test'], f['y_test']
+ 
+x_train, x_test = x_train / 255.0, x_test / 255.0
  
 model = tf.keras.models.Sequential([
     tf.keras.layers.Flatten(input_shape=(28, 28)),
@@ -48,8 +56,21 @@ model.compile(optimizer=optimizer,
             loss=loss_fn,
             metrics=['accuracy'])
  
+ 
 callback = tf.keras.callbacks.LambdaCallback(on_epoch_end=log_metadata)
  
+model.fit(x_train, y_train, epochs=valohai.parameters('epoch').value, callbacks=[callback])
+ 
+ 
+model.evaluate(x_test,  y_test, verbose=2)
+ 
+output_path = valohai.outputs().path('model.h5')
+model.save(output_path)
+
+valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
+
+input_path = valohai.inputs("myinput").path()
+
 output_path = valohai.outputs().path('train.csv')
 model.save(output_path)
 
