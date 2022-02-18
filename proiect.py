@@ -116,6 +116,28 @@ RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
 predictions = clf.predict(X_test)
 print(accuracy_score(y_test, predictions))
 
+input_path = 'mnist.npz'
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Flatten(input_shape=(28, 28)),
+    tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.Dropout(0.2),
+    tf.keras.layers.Dense(10, activation='softmax')
+])
+ 
+loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+model.compile(optimizer='adam',
+            loss=loss_fn,
+            metrics=['accuracy'])
+            
+x_train, y_train = ['x_train'], ['y_train']
+x_test, y_test = ['x_test'], ['y_test']
+model.fit(x_train, y_train, epochs=5)
+ 
+model.evaluate(x_test,  y_test, verbose=2)
+ 
+output_path = valohai.outputs().path('model.h5')
+model.save(output_path)
+
 out_path = valohai.outputs().path('myinput')
 
 
