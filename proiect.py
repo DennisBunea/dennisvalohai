@@ -7,8 +7,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 #%matplotlib inline
 import seaborn as sns
-data_train = pd.read_csv(valohai.inputs('myinput').path())
-data_test = pd.read_csv(valohai.inputs('myinput').path())
+data_train = pd.read_csv(valohai.inputs("myinput").path())
+data_test = pd.read_csv(valohai.inputs("myinput").path())
 
 
 default_inputs = {
@@ -35,7 +35,7 @@ def log_metadata(epoch, logs):
 
 
 # Open the CSV file from Valohai inputs
-with open(valohai.inputs('myinput').path()) as csv_file:
+with open(valohai.inputs("myinput").path()) as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
     
 for i in range(valohai.parameters('iterations').value):
@@ -147,5 +147,5 @@ RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
 predictions = clf.predict(X_test)
 print(accuracy_score(y_test, predictions))
 
-out_path = valohai.outputs().path('myinput')
+out_path = valohai.outputs().path("myinput")
 print(out_path)
