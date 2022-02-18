@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 data_train = pd.read_csv(valohai.inputs('myinput').path())
 data_test = pd.read_csv(valohai.inputs('myinput').path())
-input_path = valohai.inputs('myinput').path()
+
 
 default_inputs = {
     'myinput': 'datum://017ef88d-2343-ef70-a47c-1ed37b59b244',
@@ -23,14 +23,17 @@ default_parameters = {
 
 }
 
+valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
+
+input_path = valohai.inputs('myinput').path()
+
+
 def log_metadata(epoch, logs):
      with valohai.logger() as logger:
         logger.log('epoch', epoch)
         logger.log('accuracy', logs['accuracy'])
         logger.log('loss', logs['loss'])
 
-
-valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
 
 # Open the CSV file from Valohai inputs
 with open(valohai.inputs('myinput').path()) as csv_file:
