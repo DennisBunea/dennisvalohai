@@ -30,9 +30,9 @@ def log_metadata(epoch, logs):
         logger.log('loss', logs['loss'])
 
 input_path = valohai.inputs('myinput').path()
-x_train, y_train = ['x_train'], ['y_train']
-x_test, y_test = ['x_test'], ['y_test']
-x_train, x_test = x_train / 255.0, x_test / 255.0
+data_train, data_train = ['data_train'], ['data_train']
+data_test, data_test = ['data_test'], ['data_test']
+data_train, data_test = data_train / 255.0, data_test / 255.0
 model = tf.keras.models.Sequential([
     tf.keras.layers.Flatten(input_shape=(28, 28)),
     tf.keras.layers.Dense(128, activation='relu'),
@@ -46,8 +46,8 @@ model.compile(optimizer=optimizer,
             loss=loss_fn,
             metrics=['accuracy'])
 callback = tf.keras.callbacks.LambdaCallback(on_epoch_end=log_metadata)
-model.fit(x_train, y_train, epochs=valohai.parameters('epoch').value, callbacks=[callback])
-model.evaluate(x_test,  y_test, verbose=2)
+model.fit(data_train, data_train, epochs=valohai.parameters('epoch').value, callbacks=[callback])
+model.evaluate(data_test,  data_test, verbose=2)
 output_path = valohai.outputs().path('model.h5')
 model.save(output_path)
 
