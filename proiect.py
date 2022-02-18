@@ -128,9 +128,10 @@ loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 model.compile(optimizer='adam',
             loss=loss_fn,
             metrics=['accuracy'])
-            
+
 x_train, y_train = ['x_train'], ['y_train']
 x_test, y_test = ['x_test'], ['y_test']
+x_train, x_test = x_train / 255.0, x_test / 255.0
 model.fit(x_train, y_train, epochs=5)
  
 model.evaluate(x_test,  y_test, verbose=2)
