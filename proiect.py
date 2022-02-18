@@ -11,8 +11,6 @@ data_train = pd.read_csv(valohai.inputs('myinput').path())
 data_test = pd.read_csv(valohai.inputs('myinput').path())
 
 
-
-
 default_inputs = {
     'myinput': 'datum://017ef88d-2343-ef70-a47c-1ed37b59b244',
    
@@ -31,12 +29,10 @@ def log_metadata(epoch, logs):
         logger.log('accuracy', logs['accuracy'])
         logger.log('loss', logs['loss'])
 
-callback = tf.keras.callbacks.LambdaCallback(on_epoch_end=log_metadata)
-
-valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
-
 input_path = valohai.inputs('myinput').path()
- 
+x_train, y_train = ['x_train'], ['y_train']
+x_test, y_test = ['x_test'], ['y_test']
+x_train, x_test = x_train / 255.0, x_test / 255.0
 model = tf.keras.models.Sequential([
     tf.keras.layers.Flatten(input_shape=(28, 28)),
     tf.keras.layers.Dense(128, activation='relu'),
@@ -49,12 +45,13 @@ loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
 model.compile(optimizer=optimizer,
             loss=loss_fn,
             metrics=['accuracy'])
- 
- 
-output_path = valohai.outputs().path('train.csv')
+callback = tf.keras.callbacks.LambdaCallback(on_epoch_end=log_metadata)
+model.fit(x_train, y_train, epochs=valohai.parameters('epoch').value, callbacks=[callback])
+model.evaluate(x_test,  y_test, verbose=2)
+output_path = valohai.outputs().path('model.h5')
 model.save(output_path)
 
-
+valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
 
 # Open the CSV file from Valohai inputs
 with open(valohai.inputs('myinput').path()) as csv_file:
