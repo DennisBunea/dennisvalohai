@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 data_train = pd.read_csv(valohai.inputs('myinput').path())
 data_test = pd.read_csv(valohai.inputs('myinput').path())
-
+input_path = valohai.inputs('myinput').path()
 
 default_inputs = {
     'myinput': 'datum://017ef88d-2343-ef70-a47c-1ed37b59b244',
@@ -29,27 +29,6 @@ def log_metadata(epoch, logs):
         logger.log('accuracy', logs['accuracy'])
         logger.log('loss', logs['loss'])
 
-input_path = valohai.inputs('myinput').path()
-data_train, data_train = ['data_train'], ['data_train']
-data_test, data_test = ['data_test'], ['data_test']
-data_train, data_test = data_train / 255.0, data_test / 255.0
-model = tf.keras.models.Sequential([
-    tf.keras.layers.Flatten(input_shape=(28, 28)),
-    tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dropout(0.2),
-    tf.keras.layers.Dense(10)
-])
- 
-optimizer = tf.keras.optimizers.Adam(learning_rate=valohai.parameters('learning_rate').value)
-loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
-model.compile(optimizer=optimizer,
-            loss=loss_fn,
-            metrics=['accuracy'])
-callback = tf.keras.callbacks.LambdaCallback(on_epoch_end=log_metadata)
-model.fit(data_train, data_train, epochs=valohai.parameters('epoch').value, callbacks=[callback])
-model.evaluate(data_test,  data_test, verbose=2)
-output_path = valohai.outputs().path('model.h5')
-model.save(output_path)
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
 
@@ -168,7 +147,5 @@ print(accuracy_score(y_test, predictions))
 
 
 out_path = valohai.outputs().path('myinput')
-def to_csv(df):
-    df.to_csv(out_path)
 
 
