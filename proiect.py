@@ -33,6 +33,12 @@ def log_metadata(epoch, logs):
         logger.log('accuracy', logs['accuracy'])
         logger.log('loss', logs['loss'])
 
+for i in range(3):
+    with valohai.metadata.logger() as logger:
+        logger.log("iteration", i)
+        logger.log("accuracy", 0.001)
+        logger.log("loss", 12.456)
+
 
 # Open the CSV file from Valohai inputs
 with open(valohai.inputs("myinput").path()) as csv_file:
