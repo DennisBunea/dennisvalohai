@@ -7,61 +7,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 #%matplotlib inline
 import seaborn as sns
-import sklearn
-from sklearn import KFold
 data_train = pd.read_csv(valohai.inputs('myinput').path())
 data_test = pd.read_csv(valohai.inputs('myinput').path())
-
-
-default_inputs = {
-    'myinput': 'datum://017ef88d-2343-ef70-a47c-1ed37b59b244',
-   
-}
-
-default_parameters = {
-    'iterations': 10,
-    'epoch': 10,
-    'learning_rate': 0.001,
-
-}
-
-valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
-
-input_path = valohai.inputs('myinput').path()
-
-
-def run_kfold(clf):
-    kf = KFold(891, n_folds=10)
-    outcomes = []
-    fold = 0
-    for train_index, test_index in kf:
-        fold += 1
-        X_train, X_test = X_all.values[train_index], X_all.values[test_index]
-        y_train, y_test = y_all.values[train_index], y_all.values[test_index]
-        clf.fit(X_train, y_train)
-        predictions = clf.predict(X_test)
-        accuracy = accuracy_score(y_test, predictions)
-        outcomes.append(accuracy)
-        print("Fold {0} accuracy: {1}".format(fold, accuracy))     
-    mean_outcome = np.mean(outcomes)
-    print("Mean Accuracy: {0}".format(mean_outcome)) 
-
-
-
-def log_metadata(epoch, logs):
-     with valohai.logger() as logger:
-        logger.log('epoch', epoch)
-        logger.log('accuracy', logs['accuracy'])
-        logger.log('loss', logs['loss'])
-
-
-# Open the CSV file from Valohai inputs
-with open(valohai.inputs('myinput').path()) as csv_file:
-    reader = csv.reader(csv_file, delimiter=',')
-    
-for i in range(valohai.parameters('iterations').value):
-    print("Iteration %s" % i)
-
 sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
 plt.show()
 
@@ -133,6 +80,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import make_scorer, accuracy_score
 from sklearn.model_selection import GridSearchCV
 
+
 # Choose the type of classifier. 
 clf = RandomForestClassifier()
 
@@ -167,6 +115,26 @@ RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
 
 predictions = clf.predict(X_test)
 print(accuracy_score(y_test, predictions))
+
+from sklearn.model_selection import KFold
+
+def run_kfold(clf):
+    kf = KFold(891, n_folds=10)
+    outcomes = []
+    fold = 0
+    for train_index, test_index in kf:
+        fold += 1
+        X_train, X_test = X_all.values[train_index], X_all.values[test_index]
+        y_train, y_test = y_all.values[train_index], y_all.values[test_index]
+        clf.fit(X_train, y_train)
+        predictions = clf.predict(X_test)
+        accuracy = accuracy_score(y_test, predictions)
+        outcomes.append(accuracy)
+        print("Fold {0} accuracy: {1}".format(fold, accuracy))     
+    mean_outcome = np.mean(outcomes)
+    print("Mean Accuracy: {0}".format(mean_outcome)) 
+
+run_kfold(clf)
 
 
 out_path = valohai.outputs().path('myinput')
