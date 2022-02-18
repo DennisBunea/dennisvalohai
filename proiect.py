@@ -7,6 +7,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 #%matplotlib inline
 import seaborn as sns
+import sklearn
+from sklearn import KFold
 data_train = pd.read_csv(valohai.inputs('myinput').path())
 data_test = pd.read_csv(valohai.inputs('myinput').path())
 
@@ -26,6 +28,24 @@ default_parameters = {
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
 
 input_path = valohai.inputs('myinput').path()
+
+
+def run_kfold(clf):
+    kf = KFold(891, n_folds=10)
+    outcomes = []
+    fold = 0
+    for train_index, test_index in kf:
+        fold += 1
+        X_train, X_test = X_all.values[train_index], X_all.values[test_index]
+        y_train, y_test = y_all.values[train_index], y_all.values[test_index]
+        clf.fit(X_train, y_train)
+        predictions = clf.predict(X_test)
+        accuracy = accuracy_score(y_test, predictions)
+        outcomes.append(accuracy)
+        print("Fold {0} accuracy: {1}".format(fold, accuracy))     
+    mean_outcome = np.mean(outcomes)
+    print("Mean Accuracy: {0}".format(mean_outcome)) 
+
 
 
 def log_metadata(epoch, logs):
