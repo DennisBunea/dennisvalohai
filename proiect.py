@@ -148,3 +148,4 @@ predictions = clf.predict(X_test)
 print(accuracy_score(y_test, predictions))
 
 out_path = valohai.outputs().path('myinput')
+print(out_path)
