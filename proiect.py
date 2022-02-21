@@ -2,6 +2,7 @@ import valohai
 import tensorflow as tf
 import csv
 from csv import reader
+import sklearn
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -46,6 +47,8 @@ with open(valohai.inputs("myinput").path()) as csv_file:
     
 for i in range(valohai.parameters('iterations').value):
     print("Iteration %s" % i)
+
+
 
 sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
 plt.show()
@@ -151,7 +154,13 @@ RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
             warm_start=False)
 
 predictions = clf.predict(X_test)
+from sklearn.metrics import accuracy_score
+y_pred = [0, 2, 1, 3]
+y_true = [0, 1, 2, 3]
+accuracy_score(y_true, y_pred)
+accuracy_score(y_true, y_pred, normalize=False)
 print(accuracy_score(y_test, predictions))
+
 
 out_path = valohai.outputs().path("myinput")
 print(out_path)
