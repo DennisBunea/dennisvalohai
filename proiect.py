@@ -33,7 +33,7 @@ def log_metadata(epoch, logs):
         logger.log('epoch', epoch)
         logger.log('accuracy', logs['accuracy'])
         logger.log('loss', logs['loss'])
-from sklearn.metrics import accuracy_score
+        
 for i in range(3):
     with valohai.metadata.logger() as logger:
         logger.log("iteration", i)
@@ -159,7 +159,7 @@ y_pred = [0, 2, 1, 3]
 y_true = [0, 1, 2, 3]
 accuracy_score(y_true, y_pred)
 accuracy_score(y_true, y_pred, normalize=False)
-print(accuracy_score(y_test, predictions))
+
 
 
 out_path = valohai.outputs().path("myinput")
