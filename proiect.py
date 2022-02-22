@@ -3,7 +3,7 @@ import tensorflow as tf
 import csv
 from csv import reader
 import sklearn
-import numpy as np
+import numpy as np 
 import pandas as pd
 import matplotlib.pyplot as plt
 #%matplotlib inline
@@ -33,12 +33,12 @@ def log_metadata(epoch, logs):
         logger.log('epoch', epoch)
         logger.log('accuracy', logs['accuracy'])
         logger.log('loss', logs['loss'])
-        
+
 for i in range(3):
     with valohai.metadata.logger() as logger:
         logger.log("iteration", i)
-        logger.log("accuracy", 0.001)
-        logger.log("loss", 12.456)
+        logger.log("accuracy", i)
+        logger.log("loss", i)
 
 
 # Open the CSV file from Valohai inputs
