@@ -32,19 +32,6 @@ valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_i
 
 input_path = valohai.inputs("train","test").path()
 
-def log_metadata(epoch, logs):
-     with valohai.logger() as logger:
-        logger.log('epoch', epoch)
-        logger.log('accuracy', logs['accuracy'])
-        logger.log('loss', logs['loss'])
-
-from sklearn.metrics import accuracy_score
-y_pred = [0, 2, 1, 3]
-y_true = [0, 1, 2, 3]
-accuracy_score(y_true, y_pred)
-accuracy_score(y_true, y_pred, normalize=False)
-with valohai.metadata.logger() as logger:
-    logger.log("accuracy", accuracy_score(y_true, y_pred))
 
 
 # Open the CSV file from Valohai inputs
@@ -140,12 +127,26 @@ acc_scorer = make_scorer(accuracy_score)
 # Fit the best algorithm to the data. 
 clf.fit(X_train, y_train)
 
-classifier = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+clf = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
             max_depth=5, max_features='log2', max_leaf_nodes=None,
             min_samples_leaf=1, min_samples_split=2,
             min_weight_fraction_leaf=0.0, n_estimators=9, n_jobs=1,
             oob_score=False, random_state=None, verbose=0,
             warm_start=False)
+
+def log_metadata(epoch, logs):
+     with valohai.logger() as logger:
+        logger.log('epoch', epoch)
+        logger.log('accuracy', logs['accuracy'])
+        logger.log('loss', logs['loss'])
+
+from sklearn.metrics import accuracy_score
+y_pred = [0, 2, 1, 3]
+y_true = [0, 1, 2, 3]
+accuracy_score(y_true, y_pred)
+accuracy_score(y_true, y_pred, normalize=False)
+with valohai.metadata.logger() as logger:
+    logger.log("accuracy", accuracy_score(y_true, y_pred))
 
 predictions = clf.predict(X_test)
 
