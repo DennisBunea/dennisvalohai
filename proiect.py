@@ -20,12 +20,12 @@ default_inputs = {
    
 }
 
-default_parameters = {'n_estimators': 4,
+default_parameters = {'n_estimators': [4],
               'max_features': 'log2', 
               'criterion': 'entropy',
-              'max_depth': 2, 
-              'min_samples_split': 2,
-              'min_samples_leaf': 1
+              'max_depth': [2], 
+              'min_samples_split': [2],
+              'min_samples_leaf': [1]
              }
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
