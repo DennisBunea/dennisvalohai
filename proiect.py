@@ -111,7 +111,12 @@ from sklearn.metrics import make_scorer, accuracy_score
 from sklearn.model_selection import GridSearchCV
 
 # Choose the type of classifier. 
-clf = RandomForestClassifier()
+clf = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+            max_depth=5, max_features='log2', max_leaf_nodes=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=9, n_jobs=1,
+            oob_score=False, random_state=None, verbose=0,
+            warm_start=False)
 
 
 # Type of scoring used to compare parameter combinations
@@ -126,13 +131,9 @@ acc_scorer = make_scorer(accuracy_score)
 
 # Fit the best algorithm to the data. 
 clf.fit(X_train, y_train)
+predictions = clf.predict(X_test)
+print(accuracy_score(y_test, predictions))
 
-clf = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
-            max_depth=5, max_features='log2', max_leaf_nodes=None,
-            min_samples_leaf=1, min_samples_split=2,
-            min_weight_fraction_leaf=0.0, n_estimators=9, n_jobs=1,
-            oob_score=False, random_state=None, verbose=0,
-            warm_start=False)
 
 def log_metadata(epoch, logs):
      with valohai.logger() as logger:
@@ -147,9 +148,6 @@ accuracy_score(y_true, y_pred)
 accuracy_score(y_true, y_pred, normalize=False)
 with valohai.metadata.logger() as logger:
     logger.log("accuracy", accuracy_score(y_true, y_pred))
-
-predictions = clf.predict(X_test)
-
 
 out_path = valohai.outputs().path("train", "test")
 print(out_path)
