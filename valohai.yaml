@@ -5,22 +5,43 @@
     - pip install -r requirements.txt
     - python ./proiect.py {parameters}
     parameters:
-    - name: iterations
-      default: 10
+    - name: n_estimators
+      default: 4
       multiple-separator: ','
       optional: false
       type: integer
-    - name: epoch
-      default: 10
+    - name: max_features
+      default: log2
+      multiple-separator: ','
+      optional: false
+      type: string
+    - name: criterion
+      default: entropy
+      multiple-separator: ','
+      optional: false
+      type: string
+    - name: max_depth
+      default: 2
       multiple-separator: ','
       optional: false
       type: integer
-    - name: learning_rate
-      default: 0.001
+    - name: min_samples_split
+      default: 2
       multiple-separator: ','
       optional: false
-      type: float
+      type: integer
+    - name: min_samples_leaf
+      default: 1
+      multiple-separator: ','
+      optional: false
+      type: integer
     inputs:
-    - name: myinput
+    - name: train
       default: datum://017ef88d-2343-ef70-a47c-1ed37b59b244
+      optional: false
+    - name: test
+      default: datum://017ef88d-21b8-2413-6212-714e6dd770a8
+      optional: false
+    - name: gender_submission
+      default: datum://017ef88d-2036-4ea5-7755-9d1d303548cf
       optional: false

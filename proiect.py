@@ -50,11 +50,6 @@ with valohai.metadata.logger() as logger:
 # Open the CSV file from Valohai inputs
 with open(valohai.inputs("train","test").path()) as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
-    
-for i in range(valohai.parameters('iterations').value):
-    print("Iteration %s" % i)
-
-
 
 sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
 
