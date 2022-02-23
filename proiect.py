@@ -140,7 +140,7 @@ clf = grid_obj.best_estimator_
 # Fit the best algorithm to the data. 
 clf.fit(X_train, y_train)
 
-RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+classifier = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
             max_depth=5, max_features='log2', max_leaf_nodes=None,
             min_samples_leaf=1, min_samples_split=2,
             min_weight_fraction_leaf=0.0, n_estimators=9, n_jobs=1,
