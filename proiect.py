@@ -115,7 +115,7 @@ clf = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entro
             oob_score=False, random_state=23, verbose=0,
             warm_start=False)
 
-grid_obj = GridSearchCV(clf, default_parameters, scoring=accuracy_score)
+grid_obj = GridSearchCV(clf, default_parameters, scoring=accuracy_score , n_jobs=-1)
 grid_obj = grid_obj.fit(X_train, y_train)
 clf.fit(X_train, y_train)
 predictions = clf.predict(X_test)
