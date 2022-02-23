@@ -110,8 +110,7 @@ from sklearn.metrics import make_scorer, accuracy_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 clf = RandomForestClassifier(random_state=0)
-X = [[ 1,  2,  3],  # 2 samples, 3 features
-...      [11, 12, 13]]
+X = [[ 1,  2,  3],[11, 12, 13]]
 y = [0, 1]  # classes of each sample
 clf.fit(X, y)
 RandomForestClassifier(random_state=0)
@@ -131,7 +130,7 @@ acc_scorer = make_scorer(accuracy_score)
 #clf = grid_obj.best_estimator_
 
 # Fit the best algorithm to the data. 
-clf.fit(X_train, y_train)
+
 predictions = clf.predict(X_test)
 with valohai.metadata.logger() as logger:
     logger.log("accuracy", accuracy_score(y_all, y_all))
