@@ -131,11 +131,11 @@ clf = RandomForestClassifier()
 acc_scorer = make_scorer(accuracy_score)
 
 # Run the grid search
-grid_obj = GridSearchCV(clf, default_parameters, scoring=acc_scorer)
-grid_obj = grid_obj.fit(X_train, y_train)
+#grid_obj = GridSearchCV(clf, default_parameters, scoring=acc_scorer)
+#grid_obj = grid_obj.fit(X_train, y_train)
 
 # Set the clf to the best combination of parameters
-clf = grid_obj.best_estimator_
+#clf = grid_obj.best_estimator_
 
 # Fit the best algorithm to the data. 
 clf.fit(X_train, y_train)
