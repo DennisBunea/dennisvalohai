@@ -105,6 +105,9 @@ y_all = data_train['Survived']
 num_test = 0.20
 X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, test_size=num_test, random_state=23)
 
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors=3)
+knn.fit(X_train, y_train)
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import make_scorer, accuracy_score
@@ -148,6 +151,10 @@ accuracy_score(y_true, y_pred)
 accuracy_score(y_true, y_pred, normalize=False)
 with valohai.metadata.logger() as logger:
     logger.log("accuracy", accuracy_score(y_true, y_pred))
+
+
+from sklearn.externals import joblib
+joblib.dump(knn, 'iris_knn.pkl')
 
 out_path = valohai.outputs().path("train", "test")
 print(out_path)
