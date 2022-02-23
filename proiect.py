@@ -108,14 +108,16 @@ X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, test_size=num_
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import make_scorer, accuracy_score
 from sklearn.model_selection import GridSearchCV
+from sklearn.ensemble import RandomForestClassifier
+clf = RandomForestClassifier(random_state=0)
+X = [[ 1,  2,  3],  # 2 samples, 3 features
+...      [11, 12, 13]]
+y = [0, 1]  # classes of each sample
+clf.fit(X, y)
+RandomForestClassifier(random_state=0)
 
 # Choose the type of classifier. 
-clf = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
-            max_depth=5, max_features='log2', max_leaf_nodes=None,
-            min_samples_leaf=1, min_samples_split=2,
-            min_weight_fraction_leaf=0.0, n_estimators=9, n_jobs=1,
-            oob_score=False, random_state=None, verbose=0,
-            warm_start=False)
+
 
 
 # Type of scoring used to compare parameter combinations
