@@ -105,10 +105,6 @@ y_all = data_train['Survived']
 num_test = 0.20
 X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, test_size=num_test, random_state=23)
 
-from sklearn.neighbors import KNeighborsClassifier
-knn = KNeighborsClassifier(n_neighbors=3)
-knn.fit(X_train, y_train)
-
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import make_scorer, accuracy_score
 from sklearn.model_selection import GridSearchCV
@@ -136,7 +132,7 @@ acc_scorer = make_scorer(accuracy_score)
 clf.fit(X_train, y_train)
 predictions = clf.predict(X_test)
 with valohai.metadata.logger() as logger:
-    logger.log("accuracy", accuracy_score(X_train, y_train))
+    logger.log("accuracy", accuracy_score(y_all, y_all))
 
 
 out_path = valohai.outputs().path("train", "test")
