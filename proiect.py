@@ -8,21 +8,25 @@ import pandas as pd
 import matplotlib.pyplot as plt
 #%matplotlib inline
 import seaborn as sns
-data_train = pd.read_csv(valohai.inputs("myinput").path())
-data_test = pd.read_csv(valohai.inputs("myinput").path())
+data_train = pd.read_csv(valohai.inputs("train").path())
+data_test = pd.read_csv(valohai.inputs("test").path())
 
 
 default_inputs = {
-    'myinput': 'datum://017ef88d-2343-ef70-a47c-1ed37b59b244',
+    'train': 'datum://017ef88d-2343-ef70-a47c-1ed37b59b244',
+        'test': 'datum://017ef88d-21b8-2413-6212-714e6dd770a8',
+            'gender_submission': 'datum://017ef88d-2036-4ea5-7755-9d1d303548cf',
+
    
 }
 
-default_parameters = {
-    'iterations': 10,
-    'epoch': 10,
-    'learning_rate': 0.001,
-
-}
+default_parameters = {'n_estimators': [4],
+              'max_features': ['log2'], 
+              'criterion': ['entropy'],
+              'max_depth': [2], 
+              'min_samples_split': [2],
+              'min_samples_leaf': [1]
+             }
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
 
@@ -34,15 +38,17 @@ def log_metadata(epoch, logs):
         logger.log('accuracy', logs['accuracy'])
         logger.log('loss', logs['loss'])
 
-for i in range(3):
-    with valohai.metadata.logger() as logger:
-        logger.log("iteration", i)
-        logger.log("accuracy", i)
-        logger.log("loss", i)
+from sklearn.metrics import accuracy_score
+y_pred = [0, 2, 1, 3]
+y_true = [0, 1, 2, 3]
+accuracy_score(y_true, y_pred)
+accuracy_score(y_true, y_pred, normalize=False)
+with valohai.metadata.logger() as logger:
+    logger.log("accuracy", accuracy_score(y_true, y_pred))
 
 
 # Open the CSV file from Valohai inputs
-with open(valohai.inputs("myinput").path()) as csv_file:
+with open(valohai.inputs("train","test").path()) as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
     
 for i in range(valohai.parameters('iterations').value):
@@ -51,7 +57,8 @@ for i in range(valohai.parameters('iterations').value):
 
 
 sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
-plt.show()
+
+plt.savefig(valohai.outputs().path("mygraph.png"))
 
 
 def simplify_ages(df):
@@ -124,20 +131,12 @@ from sklearn.model_selection import GridSearchCV
 # Choose the type of classifier. 
 clf = RandomForestClassifier()
 
-# Choose some parameter combinations to try
-parameters = {'n_estimators': [4, 6, 9], 
-              'max_features': ['log2', 'sqrt','auto'], 
-              'criterion': ['entropy', 'gini'],
-              'max_depth': [2, 3, 5, 10], 
-              'min_samples_split': [2, 3, 5],
-              'min_samples_leaf': [1,5,8]
-             }
 
 # Type of scoring used to compare parameter combinations
 acc_scorer = make_scorer(accuracy_score)
 
 # Run the grid search
-grid_obj = GridSearchCV(clf, parameters, scoring=acc_scorer)
+grid_obj = GridSearchCV(clf, default_parameters, scoring=acc_scorer)
 grid_obj = grid_obj.fit(X_train, y_train)
 
 # Set the clf to the best combination of parameters
@@ -154,12 +153,6 @@ RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
             warm_start=False)
 
 predictions = clf.predict(X_test)
-from sklearn.metrics import accuracy_score
-y_pred = [0, 2, 1, 3]
-y_true = [0, 1, 2, 3]
-accuracy_score(y_true, y_pred)
-accuracy_score(y_true, y_pred, normalize=False)
-
 
 
 out_path = valohai.outputs().path("myinput")
