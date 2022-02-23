@@ -108,12 +108,26 @@ X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, test_size=num_
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import make_scorer, accuracy_score
 from sklearn.model_selection import GridSearchCV
-from sklearn.ensemble import RandomForestClassifier
-clf = RandomForestClassifier(random_state=0)
+clf = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+            max_depth=2, max_features='log2', max_leaf_nodes=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=4, n_jobs=1,
+            oob_score=False, random_state=None, verbose=0,
+            warm_start=False)
 X = [[ 1,  2,  3],[11, 12, 13]]
 y = [0, 1]  # classes of each sample
 clf.fit(X, y)
-RandomForestClassifier(random_state=0)
+RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
+            max_depth=2, max_features='log2', max_leaf_nodes=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=4, n_jobs=1,
+            oob_score=False, random_state=None, verbose=0,
+            warm_start=False)
+
+predictions = clf.predict(X_test)
+print(accuracy_score(y_test, predictions))
+with valohai.metadata.logger() as logger:
+    logger.log("accuracy", accuracy_score(y_test, predictions))
 
 # Choose the type of classifier. 
 
@@ -130,8 +144,7 @@ acc_scorer = make_scorer(accuracy_score)
 #clf = grid_obj.best_estimator_
 
 # Fit the best algorithm to the data. 
-with valohai.metadata.logger() as logger:
-    logger.log("accuracy", accuracy_score(y_all, y_all))
+
 
 
 out_path = valohai.outputs().path("train", "test")
