@@ -114,7 +114,14 @@ clf = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entro
             min_weight_fraction_leaf=0.0, n_estimators=4, n_jobs=1,
             oob_score=False, random_state=23, verbose=0,
             warm_start=False)
+
+grid_obj = GridSearchCV(clf, default_parameters, scoring=accuracy_score)
+grid_obj = grid_obj.fit(X_train, y_train)
+clf.fit(X_train, y_train)
 predictions = clf.predict(X_test)
+clf = grid_obj.best_estimator_
+acc_scorer = make_scorer(accuracy_score)
+
 with valohai.metadata.logger() as logger:
     logger.log("accuracy", accuracy_score(y_test, predictions))
 
@@ -123,7 +130,7 @@ with valohai.metadata.logger() as logger:
 
 
 # Type of scoring used to compare parameter combinations
-acc_scorer = make_scorer(accuracy_score)
+
 
 # Run the grid search
 #grid_obj = GridSearchCV(clf, default_parameters, scoring=acc_scorer)
