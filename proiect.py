@@ -130,8 +130,6 @@ acc_scorer = make_scorer(accuracy_score)
 #clf = grid_obj.best_estimator_
 
 # Fit the best algorithm to the data. 
-
-predictions = clf.predict(X_test)
 with valohai.metadata.logger() as logger:
     logger.log("accuracy", accuracy_score(y_all, y_all))
 
