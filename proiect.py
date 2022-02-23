@@ -135,22 +135,8 @@ acc_scorer = make_scorer(accuracy_score)
 # Fit the best algorithm to the data. 
 clf.fit(X_train, y_train)
 predictions = clf.predict(X_test)
-print(accuracy_score(y_test, predictions))
-
-
-def log_metadata(epoch, logs):
-     with valohai.logger() as logger:
-        logger.log('epoch', epoch)
-        logger.log('accuracy', logs['accuracy'])
-        logger.log('loss', logs['loss'])
-
-from sklearn.metrics import accuracy_score
-y_pred = [0, 2, 1, 3]
-y_true = [0, 1, 2, 3]
-accuracy_score(y_true, y_pred)
-accuracy_score(y_true, y_pred, normalize=False)
 with valohai.metadata.logger() as logger:
-    logger.log("accuracy", accuracy_score(y_true, y_pred))
+    logger.log("accuracy", accuracy_score(X_train, y_train))
 
 
 out_path = valohai.outputs().path("train", "test")
