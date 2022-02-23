@@ -153,8 +153,5 @@ with valohai.metadata.logger() as logger:
     logger.log("accuracy", accuracy_score(y_true, y_pred))
 
 
-from sklearn.externals import joblib
-joblib.dump(knn, 'iris_knn.pkl')
-
 out_path = valohai.outputs().path("train", "test")
 print(out_path)
