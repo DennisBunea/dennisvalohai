@@ -98,7 +98,6 @@ def encode_features(df_train, df_test):
 data_train, data_test = encode_features(data_train, data_test)
 
 from sklearn.model_selection import train_test_split
-
 X_all = data_train.drop(['Survived', 'PassengerId'], axis=1)
 y_all = data_train['Survived']
 
@@ -108,31 +107,13 @@ X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, test_size=num_
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import make_scorer, accuracy_score
 from sklearn.model_selection import GridSearchCV
+
 clf = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
             max_depth=2, max_features='log2', max_leaf_nodes=None,
             min_samples_leaf=1, min_samples_split=2,
             min_weight_fraction_leaf=0.0, n_estimators=4, n_jobs=1,
-            oob_score=False, random_state=None, verbose=0,
+            oob_score=False, random_state=23, verbose=0,
             warm_start=False)
-from sklearn.model_selection import KFold
-
-def run_kfold(clf):
-    kf = KFold(891, n_folds=10)
-    outcomes = []
-    fold = 0
-    for train_index, test_index in kf:
-        fold += 1
-        X_train, X_test = X_all.values[train_index], X_all.values[test_index]
-        y_train, y_test = y_all.values[train_index], y_all.values[test_index]
-        clf.fit(X_train, y_train)
-        predictions = clf.predict(X_test)
-        accuracy = accuracy_score(y_test, predictions)
-        outcomes.append(accuracy)
-        print("Fold {0} accuracy: {1}".format(fold, accuracy))     
-    mean_outcome = np.mean(outcomes)
-    print("Mean Accuracy: {0}".format(mean_outcome)) 
-
-run_kfold(clf)
 predictions = clf.predict(X_test)
 with valohai.metadata.logger() as logger:
     logger.log("accuracy", accuracy_score(y_test, predictions))
