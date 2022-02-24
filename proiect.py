@@ -122,14 +122,9 @@ clf.fit(X_train, y_train)
 predictions = clf.predict(X_test)
 clf = grid_obj.best_estimator_
 
-
-def log_metadata(epoch, logs):
-    with valohai.logger() as logger:
-        logger.log('epoch', epoch)
-        logger.log('accuracy', logs['accuracy'])
-        logger.log('loss', logs['loss'])
-    with valohai.metadata.logger() as logger:
-        logger.log("accuracy", accuracy_score(y_test, predictions))
+print(accuracy_score(y_test, predictions))
+with valohai.metadata.logger() as logger:
+    logger.log("accuracy", accuracy_score(y_test, predictions))
 
 # Choose the type of classifier. 
 
