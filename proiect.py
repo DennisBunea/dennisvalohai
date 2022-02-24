@@ -106,7 +106,7 @@ X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, test_size=num_
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import make_scorer, accuracy_score
-from sklearn.model_selection import GridSearchCV
+#from sklearn.model_selection import GridSearchCV
 
 clf = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
             max_depth=2, max_features='log2', max_leaf_nodes=None,
@@ -116,11 +116,11 @@ clf = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entro
             warm_start=False)
 acc_scorer = make_scorer(accuracy_score)
 
-grid_obj = GridSearchCV(clf, default_parameters, scoring=acc_scorer)
-grid_obj = grid_obj.fit(X_train, y_train)
+#grid_obj = GridSearchCV(clf, default_parameters, scoring=acc_scorer)
+#grid_obj = grid_obj.fit(X_train, y_train)
 clf.fit(X_train, y_train)
 predictions = clf.predict(X_test)
-clf = grid_obj.best_estimator_
+#clf = grid_obj.best_estimator_
 
 
 with valohai.metadata.logger() as logger:
