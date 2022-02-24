@@ -114,16 +114,22 @@ clf = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entro
             min_weight_fraction_leaf=0.0, n_estimators=4, n_jobs=1,
             oob_score=False, random_state=23, verbose=0,
             warm_start=False)
+acc_scorer = make_scorer(accuracy_score)
 
-grid_obj = GridSearchCV(clf, default_parameters, scoring=accuracy_score)
+grid_obj = GridSearchCV(clf, default_parameters, scoring=acc_scorer)
 grid_obj = grid_obj.fit(X_train, y_train)
 clf.fit(X_train, y_train)
 predictions = clf.predict(X_test)
 clf = grid_obj.best_estimator_
-acc_scorer = make_scorer(accuracy_score)
 
-with valohai.metadata.logger() as logger:
-    logger.log("accuracy", accuracy_score(y_test, predictions))
+
+def log_metadata(epoch, logs):
+    with valohai.logger() as logger:
+        logger.log('epoch', epoch)
+        logger.log('accuracy', logs['accuracy'])
+        logger.log('loss', logs['loss'])
+    with valohai.metadata.logger() as logger:
+        logger.log("accuracy", accuracy_score(y_test, predictions))
 
 # Choose the type of classifier. 
 
