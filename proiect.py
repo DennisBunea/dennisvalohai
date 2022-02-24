@@ -21,8 +21,8 @@ default_inputs = {
 }
 
 default_parameters = {'n_estimators': [4],
-              'max_features': 'log2', 
-              'criterion': 'entropy',
+              'max_features': ['log2'], 
+              'criterion': ['entropy'],
               'max_depth': [2] , 
               'min_samples_split': [2] ,
               'min_samples_leaf': [1]
