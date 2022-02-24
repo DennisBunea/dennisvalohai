@@ -122,7 +122,7 @@ clf.fit(X_train, y_train)
 predictions = clf.predict(X_test)
 clf = grid_obj.best_estimator_
 
-print(accuracy_score(y_test, predictions))
+
 with valohai.metadata.logger() as logger:
     logger.log("accuracy", accuracy_score(y_test, predictions))
 
