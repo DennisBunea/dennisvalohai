@@ -144,4 +144,4 @@ def main(config)-> Pipeline:
     preprocess = pipe.execution("preprocess-dataset")
     train = pipe.execution("train")
     #Configure the pipeline / Define edges
-    preprocess.output("preprocessed_mnist.npz").to(train.input("dataset"))
+    preprocess.output('train','test').to(train.input('train','test'))
