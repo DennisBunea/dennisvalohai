@@ -61,14 +61,3 @@
     - name: gender_submission
       default: datum://017ef88d-2036-4ea5-7755-9d1d303548cf
       optional: false
-- pipeline:
-    name: preprocess-and-train
-    nodes:
-    - name: preprocess
-      type: execution
-      step: preprocess-dataset
-    - name: train
-      type: execution
-      step: train-model
-    edges:
-    - [preprocess.output('train').to(train.input('train')]

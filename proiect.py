@@ -135,13 +135,3 @@ with valohai.metadata.logger() as logger:
 #clf = grid_obj.best_estimator_
 
 # Fit the best algorithm to the data. 
-
-from valohai import Pipeline
-def main(config)-> Pipeline:
-    #Create a pipeline called utilispipeline
-    pipe = Pipeline(name="utilspipeline", config=config)
-    #Define a pipeline nodes
-    preprocess = pipe.execution("preprocess-dataset")
-    train = pipe.execution("train")
-    #Configure the pipeline / Define edges
-    preprocess.output('train','test').to(train.input('train','test'))
