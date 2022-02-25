@@ -1,7 +1,10 @@
 import numpy as np
 import valohai
 import csv
-  
+from csv import reader
+import pandas as pd
+data_train = pd.read_csv(valohai.inputs("train").path())
+data_test = pd.read_csv(valohai.inputs("test").path())
 valohai.prepare(
       step='preprocess-dataset',
       image='python:3.9',
