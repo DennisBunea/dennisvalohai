@@ -30,15 +30,9 @@ default_parameters = {'n_estimators': [4],
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
 
-input_path = valohai.inputs("train","test").path()
-
-
-
 # Open the CSV file from Valohai inputs
 with open(valohai.inputs("train","test").path()) as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
-
-sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
 
 plt.savefig(valohai.outputs().path("mygraph.png"))
 
@@ -142,7 +136,12 @@ with valohai.metadata.logger() as logger:
 
 # Fit the best algorithm to the data. 
 
-
-
-out_path = valohai.outputs().path("train", "test")
-print(out_path)
+from valohai import Pipeline
+def main(config)-> Pipeline:
+    #Create a pipeline called utilispipeline
+    pipe = Pipeline(name="utilspipeline", config=config)
+    #Define a pipeline nodes
+    preprocess = pipe.execution("preprocess-dataset")
+    train = pipe.execution("train")
+    #Configure the pipeline / Define edges
+    preprocess.output("preprocessed_mnist.npz").to(train.input("dataset"))
