@@ -1,5 +1,6 @@
 import numpy as np
 import valohai
+import csv
   
 valohai.prepare(
       step='preprocess-dataset',
@@ -12,9 +13,10 @@ valohai.prepare(
   )
 
 print('Loading data')
-with np.load(valohai.inputs('train', 'test').path(), allow_pickle=True) as file:
-      x_train, y_train = file['x_train'], file['y_train']
-      x_test, y_test = file['x_test'], file['y_test']
+with open(valohai.inputs("train","test").path()) as csv_file:
+    reader = csv.reader(csv_file, delimiter=',')
+    x_train, y_train = csv_file['x_train'], csv_file['y_train']
+    x_test, y_test = csv_file['x_test'], csv_file['y_test']
   
 print('Preprocessing data')
 x_train, x_test = x_train / 255.0, x_test / 255.0
