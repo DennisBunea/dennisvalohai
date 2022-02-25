@@ -71,4 +71,4 @@
       type: execution
       step: train-model
     edges:
-    - [preprocess.output('train','test').to(train.input('train','test')]
+    - [preprocess.output('train').to(train.input('train')]
