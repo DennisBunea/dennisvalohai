@@ -29,7 +29,6 @@ default_parameters = {'n_estimators': 4,
              }
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
-plt.savefig(valohai.outputs().path("mygraph.png"))
 
 def simplify_ages(df):
     df.Age = df.Age.fillna(-0.5)
@@ -120,3 +119,4 @@ with valohai.metadata.logger() as logger:
 # Set the clf to the best combination of parameters
 #clf = grid_obj.best_estimator_
 
+plt.savefig(valohai.outputs().path("mygraph.png"))
