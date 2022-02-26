@@ -29,13 +29,7 @@ default_parameters = {'n_estimators': 4,
              }
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
-
-# Open the CSV file from Valohai inputs
-with open(valohai.inputs("train","test").path()) as csv_file:
-    reader = csv.reader(csv_file, delimiter=',')
-
 plt.savefig(valohai.outputs().path("mygraph.png"))
-
 
 def simplify_ages(df):
     df.Age = df.Age.fillna(-0.5)
@@ -101,7 +95,7 @@ X_train, X_test, y_train, y_test = train_test_split(X_all, y_all, test_size=num_
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import make_scorer, accuracy_score
 #from sklearn.model_selection import GridSearchCV
-
+# Choose the type of classifier.
 clf = RandomForestClassifier(bootstrap=True, class_weight=None, criterion='entropy',
             max_depth=2, max_features='log2', max_leaf_nodes=None,
             min_samples_leaf=1, min_samples_split=2,
@@ -119,14 +113,6 @@ predictions = clf.predict(X_test)
 
 with valohai.metadata.logger() as logger:
     logger.log("accuracy", accuracy_score(y_test, predictions))
-
-# Choose the type of classifier. 
-
-
-
-# Type of scoring used to compare parameter combinations
-
-
 # Run the grid search
 #grid_obj = GridSearchCV(clf, default_parameters, scoring=acc_scorer)
 #grid_obj = grid_obj.fit(X_train, y_train)
@@ -134,4 +120,3 @@ with valohai.metadata.logger() as logger:
 # Set the clf to the best combination of parameters
 #clf = grid_obj.best_estimator_
 
-# Fit the best algorithm to the data. 

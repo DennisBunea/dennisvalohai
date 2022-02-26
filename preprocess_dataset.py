@@ -26,3 +26,6 @@ print('Preprocessing data')
 print('Saving preprocessed data')
 path = valohai.outputs().path('train','test')
 
+
+#Drazen if you are taking a look I know it`s incomplete I`ll fix that till Monday! 
+#PS: I was worked at tutorial.
