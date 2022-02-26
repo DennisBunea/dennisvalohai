@@ -18,12 +18,11 @@ valohai.prepare(
 print('Loading data')
 with open(valohai.inputs("train","test").path()) as csv_file:
     reader = csv.reader(csv_file, delimiter=',')
-    x_train, y_train = csv_file('x_train'), csv_file('y_train')
-    x_test, y_test = csv_file('x_test'), csv_file('y_test')
+
   
 print('Preprocessing data')
-x_train, x_test = x_train / 255.0, x_test / 255.0
+
   
 print('Saving preprocessed data')
 path = valohai.outputs().path('train','test')
-np.savez_compressed(path, x_train=x_train, y_train=y_train, x_test=x_test, y_test=y_test)
+
