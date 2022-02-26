@@ -29,7 +29,7 @@ default_parameters = {'n_estimators': 4,
              }
 
 valohai.prepare(step="train", image="tensorflow/tensorflow:2.6.1-gpu", default_inputs=default_inputs , default_parameters=default_parameters)
-
+sns.barplot(x="Embarked", y="Survived", hue="Sex", data=data_train)
 def simplify_ages(df):
     df.Age = df.Age.fillna(-0.5)
     bins = (-1, 0, 5, 12, 18, 25, 35, 60, 120)
